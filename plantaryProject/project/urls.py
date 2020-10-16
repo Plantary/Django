@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mydiary import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('create/', views.create, name="create"),
+    path('write/', views.write, name="write"),
+    path('myhome/', views.myhome, name="myhome"),
+    path('diary/<int:diary_id>/', views.detail, name="detail"),
+    path('delete/<int:diary_id>/', views.delete, name="delete"),
+    path('update/<int:diary_id>', views.update, name="update"),
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

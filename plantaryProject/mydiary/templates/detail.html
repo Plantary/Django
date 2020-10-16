@@ -1,0 +1,19 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 일지들</title>
+</head>
+<body>
+    <p><h1><{{ diary.title }}> 일지 내용입니다.</h1></p>
+    <img src="{{ diary.image.url }}" alt="Diary_Image" width=500px>
+    <h2>{{ diary.title }}</h2>
+    <h4>{{ diary.description }}</h4>
+
+    <button><a href ="{% url 'update' diary.id %}">일지 수정</a></button>
+    <button><a href ="{% url 'delete' diary.id %}">일지 삭제</a></button>
+</body>
+</html>

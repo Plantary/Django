@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일지 다시쓰기</title>
+</head>
+<body>
+    <p>식물 일지를 수정해주세요.</p>
+
+    <form action="{% url 'update' diary.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+        <label for="inputFile">당신의 반려식물 사진을 공유해주세요!</label>
+        <div>{% if diary.image %}<p>등록된 식물 사진 : <a href="{{ diary.image.url }}">{{ diary.image.url }}</a>
+        </p>{% endif %}</div>
+        <p>새로 등록할 식물 사진 : <input type="file" id="inputFile" name="image" required></p>
+
+        <label for="inputTitle">간단한 제목을 적어주세요.</label>
+        <input type="text" id="inputTitle" value="{{ diary.title }}" name="title">
+
+        <label for="inputDescription">식물에 대한 일지를 적어주세요.</label>
+        <textarea id="inputDescription" name="description" required>{{ diary.description }}</textarea>
+
+        <button type="submit">수정 완료하기</button>
+
+    </form>
+</body>
+</html>

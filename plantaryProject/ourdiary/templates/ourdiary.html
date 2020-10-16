@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>ourdiary</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/cover/">
+    <!-- Bootstrap core CSS -->
+    <link href="css/cover.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="js/slide.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+
+    <style>
+        /*페이지css*/
+        .paper{
+            width: 300px;
+            margin: 50px 30px 0 30px;
+            font-size: 11px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+        }
+        .paper-holder{
+            width: 300px;
+        }
+        .paper-content{
+            margin-left: 15px;
+            margin-top: 10px;
+            overflow: hidden;
+            width: 300px;
+            height:60px;
+        }
+        .paper-description{
+            margin: 10px 0;
+        }
+        .paper-link{
+            display: block;
+            float: left;
+        }
+        .smallUser{
+            width: 45px;
+            height: 45px;
+        }
+        .paper-text{
+            float: left;
+            width: 200px;
+            margin-left: 15px;
+        }
+    </style>
+    <script>
+        /*page*/
+        $(document).ready(function(){
+            $('#main-section').lightbox(function(){
+                $('#main-section').page({
+                itemSelector: '.paper',
+                columnWidth: 230,
+                isAnimated: true
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>ourdiary</h1>
+    {{current_user}}
+    {% for ourdiary in ourdiarys.all %}
+    
+    <!--페이지-->
+    <main role="main" class="inner cover">
+        <section  id = "main-section">
+            <!--페이지-->
+            <div class = "paper">
+                <div class = "paper-holder">
+                    <img src="{{ourdiary.image.url}}" width=300px height=300px alt="이미지" />
+                </div>
+                <div class = "paper-content">
+                    <h4>{{ourdiary.title}}</h4>
+                    <p class="card-summary">{{ourdiary.summary}}<a href="{% url 'detail' ourdiary.id %}">...more</a></p>
+                </div>
+            </div>
+        </section>   
+    </main>
+    {% endfor %}
+
+</body>
+</html>

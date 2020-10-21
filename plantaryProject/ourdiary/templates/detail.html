@@ -13,24 +13,31 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="js/slide.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.1.1.js"></script>-->
 </head>
 <body>
     <h1>ourdiary</h1>
     <h2>detail</h2>
-    {{current_user}}
+    <p>{{current_user}}</p>
+
     <h4>{{ourdiary.title}}</h4>
     <img class = "bigImg" src="{{ourdiary.image.url}}"/> 
     <p>{{ourdiary.description}}</p>
 
     <div>
-        <input type="button" class="btn btn-info btn-sm like" name="{{ourdiary.id}}" value="Like" style="margin-top: 7px">
-        <p id="count-{{ourdiary.id}}" style="font:blod 1em; margin-top: 3px;"> 좋아요&nbsp; {{post.likes_user.all.count}}개</p>
+        <input type="button" id="like" name="{{ourdiary.id}}" value="Like">
+        <p id="count-{{ourdiary.id}}"> 좋아요{{ourdiary.like_count}}개</p>
     </div>
+
+    <p id="like-user-{{ourdiary.id}}">
+    {% for like_user in ourdiary.like_user_set.all %}
+        <p>{{like_user.username}}</p>
+    {% endfor %}
+    </p>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script type="text/javascript">
-        $(".like").click(function() {
+        $("#like").click(function() {
             var pk = $(this).attr('name')
             $.ajax({
                 type: "POST",
@@ -39,16 +46,21 @@
                 dataType: "json",
                 success: function(response){
                     alert(response.message);
-                    $("#count-" + pk).html("좋아요&nbsp;" + response.likes_count + "개");
+                    $("#count-" + pk).html("좋아요&nbsp;" + response.like_count + "개");
+                    var users = $("#like-user-"+pk).text();
+                    if(users.indexOf(response.username) != -1){
+                        $("#like-user-"+pk).text(users.replace(response.username, ""));
+                    }else{
+                        $("#like-user-"+pk).text(response.username+users);
+                    }
                 },
                 error: function(request, status, error){
                     alert("로그인이 필요합니다.")
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
                     window.location.replace(" ") /*로그인 페이지 넣기*/
                 },
             });
         })
         </script>
-
-
 </body>
 </html>

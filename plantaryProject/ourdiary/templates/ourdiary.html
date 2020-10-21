@@ -50,6 +50,50 @@
             width: 200px;
             margin-left: 15px;
         }
+         /*라이트박스*/
+        #darken-background{
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 100%;
+            display: none;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            overflow-y: scroll;
+        }
+        #lightbox{
+            width: 700px;
+            margin: 20px auto; 
+            padding: 15px;
+            border: 1px solid #333333;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 5px 5px rgba(34, 25, 25, 0.4);
+            text-align: center;
+            background-attachment: fixed;
+        }     
+        #user-information{
+            overflow: hidden; 
+            text-align: left;
+        }
+        #user-information-image{
+            float: left; 
+            width: 70px;
+        }
+        .user-information-image > img{
+            width:50px;
+            height: 50px;
+        }
+        #user-information-text{
+            float: right; 
+            width: 620px;
+        }
+        .bigImg{
+            width: 350px;
+            height: 350px;
+        }
+        #lightbox-splitter{
+            margin: 10px 0;
+        } 
     </style>
     <script>
         /*page*/
@@ -60,6 +104,30 @@
                 columnWidth: 230,
                 isAnimated: true
                 });
+            });
+        });
+
+        /*lightbox*/
+        $(document).ready(function(){
+            function showLightBox(){  
+                $('#darken-background').show();
+                $('#darken-background').css('top',$(window).scrollTop());
+                $('body').css('overflow', 'hidden');
+            }
+            function hideLightBox(){
+                $('#darken-background').hide();
+                $('body').css('overflow','');
+            }
+            $('#darken-background').click(function(){
+                hideLightBox();
+            });
+
+            $('.paper').click(function(){
+                showLightBox();
+            });
+
+            $('#lightbox').click(function(event){
+                event.stopPropagation()
             });
         });
     </script>

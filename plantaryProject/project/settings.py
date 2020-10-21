@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'ourdiary.apps.OurdiaryConfig', #ourdiary
     'main.apps.MainConfig',
     'django.contrib.sites',
-
      #allauth
     'allauth',
     'allauth.account',

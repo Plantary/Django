@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Ourdiary
 from django.contrib.auth.decorators import login_required # post_like함수가 실행될려면 먼저 로그인이 되어야 함
+
 import json
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
@@ -15,28 +16,23 @@ def ourdiary(request):
 
 def detail(request, ourdiary_id):
     ourdiary_detail = get_object_or_404(Ourdiary, pk=ourdiary_id)
-    return render(request, 'detail.html', {'ourdiary':ourdiary_detail})
+    current_user = request.user
+    return render(request, 'detail.html', {'ourdiary':ourdiary_detail, 'current_user':current_user})
 
 @login_required #post_like함수가 실행될려면 먼저 로그인이 되어야 함. 
 @require_POST #post request만 받기
 def post_like(request):
     pk = request.POST.get('pk', None)
-    post = get_object_or_404(Ourdiary, pk=pk)
-    #중간자 모델 Like를 사용하여, 현재 post와 request.user에 해당하는 Like 인스턴스를 가져옴.
-    #post_like, post_like_created = post.like_set.get_or_create(user=request.user)
+    ourdiary = get_object_or_404(Ourdiary, pk=pk)
     user = request.user
 
-    if post.likes_user.filter(id=user.id).exists():
-        post.likes_user.remove(user)
+    if ourdiary.like_user_set.filter(id=user.id).exists():
+        ourdiary.like_user_set.remove(user)
         message = '좋아요 취소'
     else:
-        post.likes_user.add(user)
+        ourdiary.like_user_set.add(user)
         message = '좋아요'
     
-    context = {'likes_count':post.count_likes_user(), 'message':message}
+    context = {'like_count':ourdiary.like_count, 'message':message, 'username':user.username} #에러가 이유 -> int형으로 바꿔줘야 함. 그런데 ourdiary.likes_count()가 함수라서 안된거임.
     return HttpResponse(json.dumps(context), content_type="application/json")
 
-    #if not post_like_created:
-    #    post_like.delete()
-    #    return redirect('/ourdiary/'+str(post.id))
-    #return redirect('/ourdiary/'+str(post.id))

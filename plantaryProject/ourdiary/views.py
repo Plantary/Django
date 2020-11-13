@@ -36,3 +36,5 @@ def post_like(request):
     context = {'like_count':ourdiary.like_count, 'message':message, 'username':user.username} #에러가 이유 -> int형으로 바꿔줘야 함. 그런데 ourdiary.likes_count()가 함수라서 안된거임.
     return HttpResponse(json.dumps(context), content_type="application/json")
 
+
+

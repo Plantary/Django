@@ -38,15 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ourdiary.apps.OurdiaryConfig', #ourdiary
-    'main.apps.MainConfig',
     'django.contrib.sites',
-     #allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    'account.apps.AccountConfig',
+    'Main.apps.MainConfig',
+    
+    #allauth
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
+    
 
     #provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
-    'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.google',
     
 ]
 

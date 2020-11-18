@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Ourdiary
+from .models import Ourdiary, Photo
 from django.contrib.auth.decorators import login_required # post_like함수가 실행될려면 먼저 로그인이 되어야 함
-
 import json
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
@@ -18,7 +17,53 @@ def detail(request, ourdiary_id):
     ourdiary_detail = get_object_or_404(Ourdiary, pk=ourdiary_id)
     current_user = request.user
     return render(request, 'detail.html', {'ourdiary':ourdiary_detail, 'current_user':current_user})
+def new(request):
+    return render(request, 'new.html')
 
+def create(request):
+    if not request.session.get('user'):
+        return render(request, 'login.html')
+    if (request.method == 'POST'):
+        ourdiary = Ourdiary()
+        ourdiary.title= request.POST['title']
+        ourdiary.description = request.POST['body']
+        ourdiary.author = request.user
+        ourdiary.save()
+        for img in request.FILES.getlist('imgs'):
+            photo = Photo()
+            photo.blog = ourdiary
+            photo.image = img
+            photo.save()
+        return redirect('/ourdiary/'+str(ourdiary.id))#형변환 뒤 더해줌 
+    else:
+        return render(request, 'new.html')
+    
+    return render(request, 'new.html')
+def update(request, ourdiary_id):
+    ourdiary = get_object_or_404(Ourdiary, pk = ourdiary_id)
+    if request.method == "POST":
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        
+        ourdiary.title = title
+        ourdiary.description = body
+        ourdiary.save()
+        for img in request.FILES.getlist('imgs'):
+            photo = Photo()
+            photo.blog = ourdiary
+            photo.image = img
+            photo.save()
+        return redirect('detail',ourdiary.id)
+    return render(request, 'edit.html', {'ourdiary':ourdiary})
+def delete(request, ourdiary_id):
+    ourdiary = get_object_or_404(Ourdiary, pk = ourdiary_id)
+    ourdiary.delete
+    return redirect('home')
+
+def mylist(request):
+    ourdiarys = Ourdiary.objects.all()
+    ourdiary_list = ourdiarys.filter(author_id=request.user)
+    return render(request,'mylist.html',{'ourdiary_list':ourdiary_list})
 @login_required #post_like함수가 실행될려면 먼저 로그인이 되어야 함. 
 @require_POST #post request만 받기
 def post_like(request):

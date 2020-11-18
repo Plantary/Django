@@ -12,22 +12,27 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="{% url 'ourdiary' %}">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link active" href="{% url 'mylist' %}">mylist <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="{%url 'new' %}">글쓰기</a>
 
           </div>
         </div>
       </nav>
       {% if user.is_authenticated %}
-    <p>{{ user.username }}</p>
-    <a href="javascript:{document.getElementById('logout').submit()}">로그아웃</a>
-    <form id="logout" method="POST" action="{% url 'logout' %}">
-        {% csrf_token %} <input type="hidden" />
-    </form>
-{% else %}
-    <a href="{% url 'signup' %}">회원가입</a>
-    <a href="{% url 'login' %}">로그인</a>
-{% endif %}
-
+      <p>{{ user.username }}</p>
+      <a href="javascript:{document.getElementById('logout').submit()}">로그아웃</a>
+      <form id="logout" method="POST" action="{% url 'logout' %}">
+          {% csrf_token %} <input type="hidden" />
+      </form>
+  {% else %}
+      <a href="{% url 'signup' %}">회원가입</a>
+      <a href="{% url 'login' %}">로그인</a>
+  {% endif %}
+  
+  {% for ourdiary in ourdiary_list.all%}
+      <h1>{{ourdiary.title}}</h1>
+      <p>{{ourdiay.pub_date}}</p>
+      <p>{{ourdiary.summary}}<a href = "{%url 'detail' ourdiary.id%}" >...more</a></p>
+      <br><br>
+  {%endfor%}
 </body>

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Ourdiary(models.Model):
+    # objects = models.Manager()
     #ForeignKey 다대일 관계 설정(연결된 모델, 삭제시 row 자체를 삭제)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -17,8 +18,7 @@ class Ourdiary(models.Model):
         through='Like'
     )
     
-    def summary(self):
-        return self.description[:50]
+
 
     @property
     #get method를 표현
@@ -35,3 +35,7 @@ class Like(models.Model):
    updated_at = models.DateTimeField(auto_now=True)
    class Meta:
        unique_together = (('user', 'ourdiary'))
+
+class Photo(models.Model):
+    blog = models.ForeignKey(Ourdiary, on_delete = models.CASCADE, null = True)
+    image = models.ImageField(upload_to='images/',blank = True, null = True)

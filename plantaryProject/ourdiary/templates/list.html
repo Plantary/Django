@@ -1,0 +1,12 @@
+{% block content %}
+    {% for ourdiary in ourdiarys %}
+        <div class="ourdiary">
+            <div class="date">
+                {{ ourdiary.published_date }}
+            </div>
+            <h1><a href="{% url 'detail' pk=ourdiary.pk %}">{{ ourdiary.title }}</a></h1>
+            <p>{{ ourdiary.text|linebreaksbr }}</p>
+            <a href="{% url 'detail' pk=ourdiary.pk %}">Comments: {{ ourdiary.comments.count }}</a>
+        </div>
+    {% endfor %}
+{% endblock content %}

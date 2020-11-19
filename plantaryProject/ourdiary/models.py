@@ -43,7 +43,7 @@ class Like(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey('ourdiary.Ourdiary', on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(Ourdiary, on_delete=models.CASCADE, editable=False, blank=True)
+    author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=False)

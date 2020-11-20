@@ -19,8 +19,6 @@ class Ourdiary(models.Model):
         through='Like'
     )
     
-
-
     @property
     #get method를 표현
     def like_count(self):

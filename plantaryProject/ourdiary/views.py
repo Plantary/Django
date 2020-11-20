@@ -21,7 +21,8 @@ def ourdiary(request):
 def detail(request, ourdiary_id):
     ourdiary_detail = get_object_or_404(Ourdiary, pk=ourdiary_id)
     current_user = request.user
-    return render(request, 'detail.html', {'ourdiary':ourdiary_detail, 'current_user':current_user})
+    form = CommentForm()
+    return render(request, 'detail.html', {'ourdiary':ourdiary_detail, 'current_user':current_user, 'form':form})
 
 #comment
 def add_comment(request, pk):
@@ -32,11 +33,14 @@ def add_comment(request, pk):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
+            comment.author = request.user
             comment.save()
             return redirect('detail', pk)
     else:
-        form = CommentForm()
-    return render(request, 'add_comment.html', {'form':form})
+        error = "no"
+        return render(request, "detail.html", {'error':error})
+        #form = CommentForm()
+    #return render(request, 'detail.html', {'form':form})
 
 def new(request):
     return render(request, 'new.html')
@@ -108,16 +112,16 @@ def post_like(request):
 
 
 @login_required
-def comment_approve(request, pk):
+def comment_approve(request, id, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.approve()
-    return redirect('detail', pk)
+    return redirect('detail', id)
 
 @login_required
-def comment_remove(request, pk):
+def comment_remove(request, id, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
-    return redirect('detail', pk)
+    return redirect('detail', id)
 
 
 

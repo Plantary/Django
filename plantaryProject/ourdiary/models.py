@@ -5,6 +5,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Ourdiary(models.Model):
+    # objects = models.Manager()
     #ForeignKey 다대일 관계 설정(연결된 모델, 삭제시 row 자체를 삭제)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -18,8 +19,7 @@ class Ourdiary(models.Model):
         through='Like'
     )
     
-    def summary(self):
-        return self.description[:50]
+
 
     @property
     #get method를 표현
@@ -40,7 +40,7 @@ class Like(models.Model):
    class Meta:
        unique_together = (('user', 'ourdiary'))
     
-
+#
 class Comment(models.Model):
     post = models.ForeignKey('ourdiary.Ourdiary', on_delete=models.CASCADE, related_name='comments')
     author = models.CharField(max_length=200)
@@ -55,16 +55,8 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
-#class Comment(models.Model):
-#    post = models.ForeignKey(Ourdiary, on_delete=models.CASCADE)
-#    body = models.CharField('댓글', max_length=150)
-#    created_at = models.DateTimeField(auto_now=True)
-
-#    def __str__(self):
-#        return self.body
-
-#class Comment(models.Model):
-#    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#    post = models.ForeignKey(Ourdiary, on_delete=models.CASCADE)
-#    content = models.TextField()
+#git
+class Photo(models.Model):
+    blog = models.ForeignKey(Ourdiary, on_delete = models.CASCADE, null = True)
+    image = models.ImageField(upload_to='images/',blank = True, null = True)
 

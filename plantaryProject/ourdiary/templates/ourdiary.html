@@ -26,16 +26,20 @@
             <!--페이지-->
             <div class = "paper">
                 <div class = "paper-holder">
-                    <img src="{{ourdiary.image.url}}" width=300px height=300px alt="이미지" />
+                    <img src="{{photo.image.url}}" width=300px height=300px alt="이미지" />
                 </div>
                 <div class = "paper-content">
                     <h4>{{ourdiary.title}}</h4>
+                    <a href="{% url 'detail' ourdiary.id %}">Comments: {{ ourdiary.comments.count }}</a>
                     <p class="card-summary">{{ourdiary.summary}}<a href="{% url 'detail' ourdiary.id %}">...more</a></p>
                 </div>
             </div>
         </section>   
     </main>
+
     {% endfor %}
+
+ 
 
 </body>
 </html>

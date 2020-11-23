@@ -28,13 +28,25 @@
                                 </td>
                                 <td class="text-left">
                                     {{cart_item.product.title}}
+                                    <img src = "{{cart_item.product.images.url}}" width="300" height="300" >
                                     <br>
-                                    SKU: {{cart_item.product.title}}
-                                    Unit Price: A${{cart_item.product.price}}
-                                    Qty: {{cart_item.quantity}} x A${{cart_item.product.price}}
-                                </td>
-                                <td>
-                                    A${{cart_item.sub_total}}
+                                    상품: {{cart_item.product.title}}
+                                    <br>
+                                    개당 가격: {{cart_item.product.price}}원
+                                    <br>
+                                    수량: {{cart_item.quantity}} x {{cart_item.product.price}}원
+                                    <br>
+                                    {{cart_item.sub_total}}원
+                                    <br>
+                                    {% if cart_item.quantity > 0 %}
+                                        <a href="{% url 'cart:add_cart' cart_item.product.id %}" >Add</a>&nbsp;                    
+                                        <a href="{% url 'cart:cart_remove' cart_item.product.id %}" >Delete</a>&nbsp;
+                                        <a href="{% url 'cart:full_remove' cart_item.product.id %}" >Remove</a>
+                                    {% else %}
+                                        <h1> hello </h1>
+                                        &nbsp;<a href="{% url 'cart:cart_remove' cart_item.product.id %}">Delete</a>&nbsp;
+                                        <a href="{% url 'cart:full_remove' cart_item.product.id %}" >Remove</a>
+                                    {% endif %}    
                                 </td>
                             </tr>
                         {% endfor %}
@@ -49,11 +61,16 @@
                             <td>Please review</td>
                         </tr>
                         <tr>
-                            <td>Your total is : A${{ total }}</td>
+                            <td>Your total is : {{ total }}원</td>
                         </tr>
                     </tbody>
                 </table>
                 <a href="{% url 'storemain' %}">쇼핑 계속하기</a>
+            </div>
+            <div>
+                {% if item_count > 0 %}
+                    <a href="{% url 'cart:cart_detail' %}">{{item_count}}개의 상품이 담겨있습니다.</a>
+                {% endif %}
             </div>
         {% endif %}
 </body>

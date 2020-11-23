@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os #ourdiary media os import
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store.apps.StoreConfig',
     'cart.apps.CartConfig',
+    'ourdiary.apps.OurdiaryConfig', #ourdiary
+    'django.contrib.sites',
+    'account.apps.AccountConfig',
+    'Main.apps.MainConfig',
+    
+    #allauth
+    #'allauth',
+    #'allauth.account',
+    #'allauth.socialaccount',
+    
+
+    #provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
+    #'allauth.socialaccount.providers.google',
+    
 ]
 
 MIDDLEWARE = [
@@ -129,3 +143,16 @@ EDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
+#ourdiary media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+AUTHENTICATION_BACKENDS = (
+    #Needed to login by username in Django admin, regardless of 'allauth'
+    'django.contrib.auth.backends.ModelBackend',
+    
+    # 'allauth' specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'

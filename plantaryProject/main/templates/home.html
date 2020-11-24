@@ -59,5 +59,10 @@
       <br><br>
       {% endifequal %}
     {%endfor%}
+<h1>profile</h1>
+    {% for profile in profile.all %}
+      {{ current_user.profile.nickname }}
+      {{ current_user.profile.description }}
+    {%endfor%}
 </body>
 {% endautoescape %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h1>Plantary의 Store</h1>
+    <br>
+    {% for product in products.all %}
+        <br>
+        <div class="container">
+            <h4>{{ product.title }}</h4>
+            <p>{{ product.pub_date }}</p>
+            <p>{{ product.summary }}</p>
+            <p><a href="{% url 'productdetail' product.id %}">상품 상세보기</a></p>
+            <br>
+            {% if product.images %}
+            <img src="{{ product.images.url }}" width="300" height="300">
+            {% endif %}
+            <br>
+        </div>
+        <br>
+    {% endfor %}
+    <br>
+    <!--<h3><a href="{% url 'storemanager' %}">Store Manager</a></h3>-->
+</body>
+</html>

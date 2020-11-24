@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <h1>Cart</h1>
+    <div>
+        {% if not cart_items %}
+            <h1>your shopping cart is empty</h1>
+            <p>Please Click <a href="{% url 'storemain' %}"> here</a>to continue shopping. </p>
+        {% else %}
+            <div>
+                <h3>Your Shopping cart</h3>
+                <table>
+                    <thread class="my_custom_table">
+                        <tr>
+                            <th colspan="5">
+                                Your Items
+                            </th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        {% for cart_item in cart_items %}
+                            <tr>
+                                <td>
+                                    <a href="{{cart_item.product.get_absolute_url}}"><img src="{{cart_item.product.image.url}}" alt="" class="float-left rounded custom_image"></a>
+                                </td>
+                                <td class="text-left">
+                                    {{cart_item.product.title}}
+                                    <img src = "{{cart_item.product.images.url}}" width="300" height="300" >
+                                    <br>
+                                    상품: {{cart_item.product.title}}
+                                    <br>
+                                    개당 가격: {{cart_item.product.price}}원
+                                    <br>
+                                    수량: {{cart_item.quantity}} x {{cart_item.product.price}}원
+                                    <br>
+                                    {{cart_item.sub_total}}원
+                                    <br>
+                                    {% if cart_item.quantity > 0 %}
+                                        <a href="{% url 'cart:add_cart' cart_item.product.id %}" >Add</a>&nbsp;                    
+                                        <a href="{% url 'cart:cart_remove' cart_item.product.id %}" >Delete</a>&nbsp;
+                                        <a href="{% url 'cart:full_remove' cart_item.product.id %}" >Remove</a>
+                                    {% else %}
+                                        <h1> hello </h1>
+                                        &nbsp;<a href="{% url 'cart:cart_remove' cart_item.product.id %}">Delete</a>&nbsp;
+                                        <a href="{% url 'cart:full_remove' cart_item.product.id %}" >Remove</a>
+                                    {% endif %}    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <table>
+                    <thread class="my_custom_thread">
+                        <th>Check Out</th>
+                    </thread>
+                    <tbody>
+                        <tr>
+                            <td>Please review</td>
+                        </tr>
+                        <tr>
+                            <td>Your total is : {{ total }}원</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="{% url 'storemain' %}">쇼핑 계속하기</a>
+            </div>
+            <div>
+                {% if item_count > 0 %}
+                    <a href="{% url 'cart:cart_detail' %}">{{item_count}}개의 상품이 담겨있습니다.</a>
+                {% endif %}
+            </div>
+        {% endif %}
+</body>
+</html>

@@ -14,8 +14,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('store/', include('store.urls')),
     path('cart/', include('cart.urls')),
-#]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
     path('account/', include('account.urls')),
     path('ourdiary/', include('ourdiary.urls')),
     path('', Main.views.home, name = 'home'),

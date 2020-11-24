@@ -11,6 +11,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('ourdiary/', include('ourdiary.urls')),
-    path('', Main.views.home, name = 'home'),
+    path('', Main.views.ourdiary_list, name = 'home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

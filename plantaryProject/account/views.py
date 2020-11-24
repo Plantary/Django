@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from .models import Profile
 from django.contrib import auth
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from .forms import ProfileForm
 # Create your views here.
 
 # 회원 가입
@@ -13,8 +16,8 @@ def signup(request):
         if request.POST['password1'] == request.POST['password2']:
             # user 객체를 새로 생성
             user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
+            Profile.objects.create(user=user)
             # 로그인 한다
-            auth.login(request, user)
             return redirect('/')
         else:
             res_data['error'] = '비밀번호가 다릅니다.'
@@ -55,3 +58,23 @@ def logout(request):
 
     # logout으로 GET 요청이 들어왔을 때, 로그인 화면을 띄워준다.
     return render(request, 'login.html')
+
+def profile_update(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST, request.FILES, instance = profile)
+        if profile_form.is_valid():
+            profile_form.save()
+        return redirect('people.html', request.user.username)
+    else:
+        profile_form = ProfileForm(instance = profile)
+    return render(request, 'profile_update.html', {'profile_form':profile_form})
+
+def people(request):
+    profile = Profile.objects.all()
+    current_user = request.user
+    # if Profile.user == request.user:
+    # else:
+        # return redirect(request, 'profile_update')
+    return render(request, 'people.html', {'profile':profile, 'current_user':current_user}) 
+    

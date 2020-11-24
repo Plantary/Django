@@ -4,6 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
+{% autoescape off %}
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -30,4 +31,33 @@
     <a href="{% url 'login' %}">로그인</a>
 {% endif %}
 
+<h1>ourdiary</h1>
+    {{current_user}}
+    {% for ourdiary in ourdiarys.all %}
+      {%  ifequal forloop.counter 1 %}
+      <h1>{{ourdiary.title}}</h1>
+      <p>{{ourdiary.summary}}<a href = "{%url 'detail' ourdiary.id%}" >...more</a></p>
+      <br><br>
+      {% endifequal %}
+    {%  ifequal forloop.counter 2 %}
+      <h1>{{ourdiary.title}}</h1>
+      <p>{{ourdiary.summary}}<a href = "{%url 'detail' ourdiary.id%}" >...more</a></p>
+      <br><br>
+      {% endifequal %}
+    {%endfor%}
+<h1>mydiary</h1>
+{{current_user}}
+    {% for mydiary in mydiary.all %}
+      {%  ifequal forloop.counter 1 %}
+      <h1>{{mydiary.title}}</h1>
+      <p>{{mydiary.summary}}<a href = "{%url 'detail' mydiary.id%}" >...more</a></p>
+      <br><br>
+      {% endifequal %}
+    {%  ifequal forloop.counter 2 %}
+      <h1>{{mydiary.title}}</h1>
+      <p>{{mydiary.summary}}<a href = "{%url 'detail' mydiary.id%}" >...more</a></p>
+      <br><br>
+      {% endifequal %}
+    {%endfor%}
 </body>
+{% endautoescape %}

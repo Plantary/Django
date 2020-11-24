@@ -39,3 +39,5 @@ class Like(models.Model):
 class Photo(models.Model):
     blog = models.ForeignKey(Ourdiary, on_delete = models.CASCADE, null = True)
     image = models.ImageField(upload_to='images/',blank = True, null = True)
+
+    

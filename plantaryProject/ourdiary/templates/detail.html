@@ -40,7 +40,7 @@
     <h4>{{ourdiary.title}}
 
     </h4>
-    {% for photo in blog.photo_set.all %}
+    {% for photo in ourdiary.photo_set.all %}
     <img src = "{{photo.image.url}}" width="100">
     <br>
     {% endfor %}
@@ -59,7 +59,7 @@
     {% endfor %}
     </p>
     {% if ourdiary.author == user %}
-    <a href = "{% url 'update' ourdiary.id%}"class = "btn btn-outline-success">수정</a>
+    <a href = "{% url 'update' ourdiary.id %}"class = "btn btn-outline-success">수정</a>
     <a href = "{% url 'delete' ourdiary.id%}"class = "btn btn-outline-danger">삭제</a>
     {% endif %}
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

@@ -29,6 +29,7 @@ def create(request):
         ourdiary.description = request.POST['body']
         ourdiary.author = request.user
         ourdiary.save()
+        
         for img in request.FILES.getlist('imgs'):
             photo = Photo()
             photo.blog = ourdiary
@@ -39,15 +40,17 @@ def create(request):
         return render(request, 'new.html')
     
     return render(request, 'new.html')
-def update(request, ourdiary_id):
+def update(request,ourdiary_id):
     ourdiary = get_object_or_404(Ourdiary, pk = ourdiary_id)
+    photo = Photo.objects.all()
+
     if request.method == "POST":
         title = request.POST.get('title')
         body = request.POST.get('body')
-        
         ourdiary.title = title
         ourdiary.description = body
         ourdiary.save()
+                    
         for img in request.FILES.getlist('imgs'):
             photo = Photo()
             photo.blog = ourdiary

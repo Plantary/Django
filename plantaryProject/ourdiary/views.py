@@ -123,24 +123,3 @@ def comment_remove(request, id, pk):
     comment.delete()
     return redirect('detail', id)
 
-
-
-#로그인이 되어야 댓글달 수 있도록(다른 comment)
-#@require_POST
-#def comment_create(request, ourdiary_id):
-#    post = get_object_or_404(Ourdiary, id=ourdiary_id)
-#    comment_form = CommentForm(request.POST)
-#    if comment_form.is_valid():
-#        comment = comment_form.save(commit=Fasle)
-#        comment.user = request.user
-#        comment.post_id = post_id
-#        comment.save()
-#        return redirect('detail', ourdiary_id)
-#    else:
-#        form = CommentForm()
-#    return render(request, 'add_comment.html', {'form':form})
-
-#def list(request):
-#    ourdiarys = Ourdiary.objects.order_by('-id').all()
-#    comment_form = CommentForm()
-#    return render(request, 'ourdiarys/list.html', {'ourdiarys':ourdiarys, 'comment_form':comment_form})

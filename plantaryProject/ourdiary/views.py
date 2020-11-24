@@ -7,6 +7,11 @@ import json
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 
+#댓글
+from .forms import CommentForm
+from .models import Comment
+
+
 # Create your views here.
 def ourdiary(request):
     ourdiarys = Ourdiary.objects
@@ -16,7 +21,27 @@ def ourdiary(request):
 def detail(request, ourdiary_id):
     ourdiary_detail = get_object_or_404(Ourdiary, pk=ourdiary_id)
     current_user = request.user
-    return render(request, 'detail.html', {'ourdiary':ourdiary_detail, 'current_user':current_user})
+    form = CommentForm()
+    return render(request, 'detail.html', {'ourdiary':ourdiary_detail, 'current_user':current_user, 'form':form})
+
+#comment
+def add_comment(request, pk):
+   #post
+    post = get_object_or_404(Ourdiary, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('detail', pk)
+    else:
+        error = "no"
+        return render(request, "detail.html", {'error':error})
+        #form = CommentForm()
+    #return render(request, 'detail.html', {'form':form})
+
 def new(request):
     return render(request, 'new.html')
 
@@ -40,7 +65,8 @@ def create(request):
         return render(request, 'new.html')
     
     return render(request, 'new.html')
-def update(request,ourdiary_id):
+
+def update(request, ourdiary_id):
     ourdiary = get_object_or_404(Ourdiary, pk = ourdiary_id)
     photo = Photo.objects.all()
 
@@ -58,6 +84,7 @@ def update(request,ourdiary_id):
             photo.save()
         return redirect('detail',ourdiary.id)
     return render(request, 'edit.html', {'ourdiary':ourdiary})
+    
 def delete(request, ourdiary_id):
     ourdiary = get_object_or_404(Ourdiary, pk = ourdiary_id)
     ourdiary.delete
@@ -67,6 +94,7 @@ def mylist(request):
     ourdiarys = Ourdiary.objects.all()
     ourdiary_list = ourdiarys.filter(author_id=request.user)
     return render(request,'mylist.html',{'ourdiary_list':ourdiary_list})
+    
 @login_required #post_like함수가 실행될려면 먼저 로그인이 되어야 함. 
 @require_POST #post request만 받기
 def post_like(request):
@@ -85,4 +113,16 @@ def post_like(request):
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 
+
+@login_required
+def comment_approve(request, id, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.approve()
+    return redirect('detail', id)
+
+@login_required
+def comment_remove(request, id, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
+    return redirect('detail', id)
 
